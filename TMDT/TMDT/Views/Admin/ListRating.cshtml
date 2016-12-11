@@ -1,0 +1,107 @@
+﻿@model PagedList.IPagedList<TMDT.Account>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "ListRating";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Danh sách đánh giá</h2>
+<div style="height:25%">
+    <table class="pull-left">
+        <tr>
+            <th>Tên tài khoản</th>
+            <th>Tổng Đánh Giá</th>
+        </tr>
+
+        @foreach (Account item in ViewBag.HighRating)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.Action("GetRating", new { m = (item.Rating + "," + item.NoRating) })
+
+                </td>
+
+
+            </tr>
+        }
+
+    </table>
+    <table class="pull-right" >
+        <tr>
+            <th>Tên tài khoản</th>
+            <th>Tổng Đánh Giá</th>
+        </tr>
+
+        @foreach (Account item in ViewBag.LowRating)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.Action("GetRating", new { m = (item.Rating + "," + item.NoRating) })
+
+                </td>
+
+
+            </tr>
+        }
+
+    </table>
+</div>
+
+<div>
+    @using (Html.BeginForm("ReturnSearch", "Home"))
+    {
+
+    <p>Bộ lọc: <select id="search">
+                   <option>--Chọn--</option>
+        <option>Dưới 1 sao</option>
+                   <option>1 đến 2 sao</option>
+                   <option>2 đến 3 sao</option>
+                   <option>3 đến 4 sao</option>
+                   <option>4 đến 5 sao</option>
+        </select></p>
+                       <input type="submit" value="TÌM KIẾM" />
+            
+    }
+</div>
+<table class="table">
+    <tr>
+        <th>Tên tài khoản</th>
+        <th>SDT</th>
+        <th>E-Mail</th>
+        <th>Địa chỉ</th>
+        <th>Tổng Đánh Giá</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+       
+        <td>
+            @Html.DisplayFor(modelItem => item.Phone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+          @Html.Action("GetRating", new { m=(item.Rating+","+item.NoRating)})
+        
+        </td>
+      
+       
+    </tr>
+}
+
+</table>
+@Html.PagedListPager(Model, page => Url.Action("ListRating", new { page }))
+
